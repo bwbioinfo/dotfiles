@@ -1,0 +1,66 @@
+{
+    (
+        modifiers: [
+            Super,
+            Shift,
+        ],
+        key: "z",
+        description: Some("Signal"),
+    ): Spawn("signal-desktop --password-store=\"kwallet6\""),
+    (
+        modifiers: [
+            Super,
+        ],
+        key: "Print",
+    ): System(Screenshot),
+    (
+        modifiers: [
+            Super,
+            Shift,
+        ],
+        key: "o",
+        description: Some("Notes"),
+    ): Spawn("obsidian"),
+    (
+        modifiers: [
+            Super,
+        ],
+        key: "d",
+        description: Some("webbrowser"),
+    ): Spawn("firedragon"),
+    (
+        modifiers: [
+            Super,
+            Shift,
+        ],
+        key: "t",
+        description: Some("ToggleDark"),
+    ): Spawn("bash /home/geonic/.scripts/cosmic_ld_toggle.sh"),
+    (
+        modifiers: [
+            Alt,
+            Shift,
+        ],
+        key: "4",
+        description: Some("GrimSatty"),
+    ): Spawn("grim -t ppm -g \"$(slurp -d)\" - | satty -f -"),
+     (
+        modifiers: [
+            Super,
+            Shift,
+        ],
+        key: "n",
+        description: Some("ToggleWiredNetwork"),
+    ): Spawn("bash /home/geonic/.config/cosmic/scripts/toggle-wired-network.sh"),
+    (
+        modifiers: [],
+        key: "Print",
+    ): Disable,
+    (
+        modifiers: [
+            Super,
+        ],
+        key: "c",
+        description: Some("Editor"),
+    ): Spawn("zeditor -n"),
+}

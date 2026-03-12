@@ -1,0 +1,11 @@
+[
+    Home,
+    Documents,
+    Downloads,
+    Music,
+    Pictures,
+    Videos,
+    Path("/home/geonic/SyncCHU"),
+    Path("/home/geonic/Documents/GitHub"),
+    Path("/home/geonic/Documents/Presentations"),
+]

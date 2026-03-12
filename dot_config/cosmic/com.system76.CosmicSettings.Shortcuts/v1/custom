@@ -62,12 +62,5 @@
         ],
         key: "c",
         description: Some("Editor"),
-    ): Spawn("zed -n"),
-        (
-        modifiers: [
-            Super,
-        ],
-        key: "c",
-        description: Some("Editor"),
     ): Spawn("zeditor -n"),
 }

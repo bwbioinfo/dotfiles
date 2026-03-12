@@ -51,12 +51,19 @@
         ],
         key: "n",
         description: Some("ToggleWiredNetwork"),
-    ): Spawn("bash /home/geonic/.config/cosmic/scripts/toggle-wired-network.sh"),
+    ): Spawn("bash /home/$USER/.config/cosmic/scripts/toggle-wired-network.sh"),
     (
         modifiers: [],
         key: "Print",
     ): Disable,
     (
+        modifiers: [
+            Super,
+        ],
+        key: "c",
+        description: Some("Editor"),
+    ): Spawn("zed -n"),
+        (
         modifiers: [
             Super,
         ],

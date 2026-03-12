@@ -35,7 +35,7 @@
         ],
         key: "t",
         description: Some("ToggleDark"),
-    ): Spawn("bash /home/geonic/.config/cosmic/cosmic_ld_toggle.sh"),
+    ): Spawn("bash /home/geonic/.config/cosmic/scripts/cosmic_ld_toggle.sh"),
     (
         modifiers: [
             Alt,

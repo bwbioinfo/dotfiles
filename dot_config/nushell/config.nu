@@ -25,11 +25,5 @@ $env.config = (
 )
 
 source git.nu
-
-if (which zoxide | is-not-empty) {
-    source zoxide.nu
-}
-
-if (which starship | is-not-empty) {
-    source starship.nu
-}
+source zoxide.nu
+source starship.nu

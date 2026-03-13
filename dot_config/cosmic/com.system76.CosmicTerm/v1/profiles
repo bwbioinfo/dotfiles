@@ -4,7 +4,7 @@
         command: "nu",
         syntax_theme_dark: "COSMIC Dark",
         syntax_theme_light: "COSMIC Light",
-        tab_title: "geonic",
+        tab_title: "",
         working_directory: "~",
         drain_on_exit: false,
     ),

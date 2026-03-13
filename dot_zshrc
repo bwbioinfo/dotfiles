@@ -1,0 +1,15 @@
+# Minimal zsh loader; themed config lives in ~/.config/shell/zshrc.d
+
+autoload -Uz compinit
+zstyle :compinstall filename "$HOME/.zshrc"
+compinit
+
+for file in \
+  "$HOME/.config/shell/env.sh" \
+  "$HOME/.config/shell/ssh-agent.sh" \
+  "$HOME/.config/shell/zshrc.d"/*.zsh(N)
+do
+  [[ -r "$file" ]] && source "$file"
+done
+
+unset file

@@ -1,0 +1,9 @@
+HISTFILE="$HOME/.histfile"
+HISTSIZE=1000
+SAVEHIST=1000
+
+bindkey -e
+
+setopt APPEND_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt SHARE_HISTORY

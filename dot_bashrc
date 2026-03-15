@@ -10,6 +10,7 @@ shell_config_dir="$HOME/.config/shell"
 shopt -s nullglob
 for file in \
 	"$shell_config_dir"/env.sh \
+	"$shell_config_dir"/git.sh \
 	"$shell_config_dir"/ssh-agent.sh \
 	"$shell_config_dir"/bashrc.d/*.bash
 do

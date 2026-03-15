@@ -35,7 +35,7 @@ palette = 'catppuccin_mocha'
 [shell]
 # Show the current shell name in the prompt
 # (e.g., bash / zsh / nu). Starship will pick the right one automatically.
-format = '[$indicator❯❯]($style)'
+format = '[ $indicator ❯❯ ]($style)'
 disabled = false
 style = "bg:red fg:crust"
 
@@ -44,11 +44,11 @@ style = "bg:red fg:crust"
 # show_always = true
 
 # Indicators (shown instead of the shell name when that shell is detected)
-bash_indicator = ' '
-zsh_indicator  = '󰰶 '
-nu_indicator   = '󰎙 '
+bash_indicator = ''
+zsh_indicator  = '󰰶'
+nu_indicator   = '󰎙'
 
-fish_indicator = '󰈺 '
+fish_indicator = '󰈺'
 powershell_indicator = '_'
 unknown_indicator = 'mystery shell'
 

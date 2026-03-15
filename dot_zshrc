@@ -6,6 +6,7 @@ compinit
 
 for file in \
   "$HOME/.config/shell/env.sh" \
+  "$HOME/.config/shell/git.sh" \
   "$HOME/.config/shell/ssh-agent.sh" \
   "$HOME/.config/shell/zshrc.d"/*.zsh(N)
 do

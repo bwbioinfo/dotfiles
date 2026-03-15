@@ -42,8 +42,8 @@
             Shift,
         ],
         key: "4",
-        description: Some("GrimSatty"),
-    ): Spawn("grim -t ppm -g \"$(slurp -d)\" - | swappy -f -"),
+        description: Some("Flameshot"),
+    ): Spawn("bash -lc 'flameshot gui'"),
      (
         modifiers: [
             Super,

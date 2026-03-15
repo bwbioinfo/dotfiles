@@ -43,7 +43,7 @@
         ],
         key: "4",
         description: Some("GrimSatty"),
-    ): Spawn("grim -t ppm -g \"$(slurp -d)\" - | satty -f -"),
+    ): Spawn("grim -t ppm -g \"$(slurp -d)\" - | swappy -f -"),
      (
         modifiers: [
             Super,

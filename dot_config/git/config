@@ -1,0 +1,33 @@
+[user]
+	name = bwbioinfo
+	email = 5053806+bwbioinfo@users.noreply.github.com
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+	default = current
+
+[fetch]
+	prune = true
+
+[rebase]
+	autoStash = true
+
+[merge]
+	conflictstyle = zdiff3
+
+[diff]
+	colorMoved = default
+	algorithm = histogram
+
+[core]
+	autocrlf = input
+	excludesFile = ~/.config/git/ignore
+
+[color]
+	ui = auto

@@ -25,6 +25,7 @@ path_append "$HOME/.local/share/flatpak/exports/bin"
 path_append "/var/lib/flatpak/exports/bin"
 path_append "/usr/local/go/bin"
 path_append "$GOPATH/bin"
+path_append "$HOME/.local/bin"
 path_append "$HOME/bin"
 
 if [ -d "$HOME/.juliaup/bin" ]; then

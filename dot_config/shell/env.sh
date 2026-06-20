@@ -27,6 +27,7 @@ path_append "/usr/local/go/bin"
 path_append "$GOPATH/bin"
 path_append "$HOME/.local/bin"
 path_append "$HOME/bin"
+path_append "$HOME/.local/share/chezmoi/scripts"
 
 if [ -d "$HOME/.juliaup/bin" ]; then
   path_prepend "$HOME/.juliaup/bin"

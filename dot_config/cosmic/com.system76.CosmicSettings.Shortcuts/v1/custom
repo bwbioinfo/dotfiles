@@ -27,7 +27,7 @@
         ],
         key: "d",
         description: Some("webbrowser"),
-    ): Spawn("firedragon"),
+    ): Spawn("firefox"),
     (
         modifiers: [
             Super,

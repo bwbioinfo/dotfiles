@@ -19,6 +19,7 @@
 use std/util "path add"
 
 path add $"($nu.home-dir)/.local/bin"
+path add $"($nu.home-dir)/.local/share/chezmoi/scripts"
 path add $"($nu.home-dir)/.cargo/bin"
 path add $"($nu.home-dir)/.local/share/flatpak/exports/bin"
 path add "/var/lib/flatpak/exports/bin"

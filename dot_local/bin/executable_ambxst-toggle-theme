@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+case "${1:-}" in
+  -h|--help)
+    printf 'Usage: ambxst-toggle-theme\n'
+    printf 'Toggle Ambxst theme.lightMode in ~/.config/ambxst/config/theme.json.\n'
+    exit 0
+    ;;
+esac
+
+if ! command -v jq >/dev/null 2>&1; then
+  printf 'jq is required but was not found in PATH\n' >&2
+  exit 1
+fi
+
+theme_config="${XDG_CONFIG_HOME:-$HOME/.config}/ambxst/config/theme.json"
+
+if [ ! -e "$theme_config" ]; then
+  printf 'Ambxst theme config not found: %s\n' "$theme_config" >&2
+  exit 1
+fi
+
+current="$(jq -r '.lightMode // false' "$theme_config")"
+
+if [ "$current" = "true" ]; then
+  next=false
+  label="Dark"
+else
+  next=true
+  label="Light"
+fi
+
+tmp="$(mktemp "${theme_config}.tmp.XXXXXX")"
+trap 'rm -f "$tmp"' EXIT
+
+jq --argjson lightMode "$next" '.lightMode = $lightMode' "$theme_config" >"$tmp"
+mv "$tmp" "$theme_config"
+trap - EXIT
+
+if command -v notify-send >/dev/null 2>&1; then
+  notify-send "Ambxst" "${label} mode" >/dev/null 2>&1 || true
+fi

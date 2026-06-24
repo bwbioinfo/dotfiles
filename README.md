@@ -28,3 +28,11 @@ scripts/setup-ambxst.sh
 Ambxst/axctl writes the sourced file from Ambxst settings. Keep custom
 fallback binds in `~/.config/hypr/hyprland.conf`; keep Ambxst shortcuts in
 Ambxst settings.
+
+Ambxst's light/dark toggle updates its shell colors, but apps also need the
+desktop toolkit preference. Enable the user watcher after applying these
+dotfiles:
+
+```sh
+systemctl --user enable --now ambxst-theme-propagate.service ambxst-theme-propagate.path
+```

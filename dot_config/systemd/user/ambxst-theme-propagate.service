@@ -1,0 +1,9 @@
+[Unit]
+Description=Propagate Ambxst theme preference to app toolkits
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/ambxst-propagate-theme
+
+[Install]
+WantedBy=default.target

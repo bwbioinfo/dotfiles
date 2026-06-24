@@ -38,6 +38,10 @@ jq --argjson lightMode "$next" '.lightMode = $lightMode' "$theme_config" >"$tmp"
 mv "$tmp" "$theme_config"
 trap - EXIT
 
+if command -v ambxst-propagate-theme >/dev/null 2>&1; then
+  ambxst-propagate-theme >/dev/null 2>&1 || true
+fi
+
 if command -v notify-send >/dev/null 2>&1; then
   notify-send "Ambxst" "${label} mode" >/dev/null 2>&1 || true
 fi

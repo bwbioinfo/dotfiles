@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch Ambxst theme preference
+
+[Path]
+PathChanged=%h/.config/ambxst/config/theme.json
+PathChanged=%h/.config/ambxst/config
+Unit=ambxst-theme-propagate.service
+
+[Install]
+WantedBy=default.target

@@ -23,3 +23,22 @@ path add $"($nu.home-dir)/.local/share/chezmoi/scripts"
 path add $"($nu.home-dir)/.cargo/bin"
 path add $"($nu.home-dir)/.local/share/flatpak/exports/bin"
 path add "/var/lib/flatpak/exports/bin"
+
+let java_home = $"($nu.home-dir)/.local/share/jdks/jdk-21.0.11+10"
+if ($java_home | path exists) {
+    $env.JAVA_HOME = $java_home
+}
+
+let android_home = $"($nu.home-dir)/Android/Sdk"
+if ($android_home | path exists) {
+    $env.ANDROID_HOME = $android_home
+    $env.ANDROID_SDK_ROOT = $android_home
+    $env.ANDROID_NDK_HOME = $"($android_home)/ndk/29.0.14206865"
+    path add $"($android_home)/emulator"
+    path add $"($android_home)/platform-tools"
+    path add $"($android_home)/cmdline-tools/latest/bin"
+}
+
+if ($java_home | path exists) {
+    path add $'($java_home)/bin'
+}

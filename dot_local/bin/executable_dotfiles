@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: dotfiles [--help|help|scripts]
+
+Show dotfiles helper commands and setup scripts.
+
+Commands:
+  help, --help    Show this help.
+  scripts         List available setup scripts.
+
+Available scripts:
+  install-deps-arch-yay.sh          Install core Arch dependencies with yay, plus language/dev tooling.
+  install-deps-ubuntu.sh            Install core Ubuntu/Debian dependencies, plus language/dev tooling.
+  setup-ambxst.sh                   Install Ambxst and seed its generated Hyprland config.
+  setup-ssh-alliance-user-key.sh    Set Alliance SSH User and IdentityFile in the managed SSH config.
+
+After chezmoi apply, scripts usually live in:
+  ~/.local/share/chezmoi/scripts
+EOF
+}
+
+source_dir() {
+  if command -v chezmoi >/dev/null 2>&1; then
+    chezmoi source-path 2>/dev/null && return 0
+  fi
+
+  if [ -d "$HOME/.local/share/chezmoi" ]; then
+    printf '%s\n' "$HOME/.local/share/chezmoi"
+    return 0
+  fi
+
+  return 1
+}
+
+script_description() {
+  case "$1" in
+    install-deps-arch-yay.sh)
+      printf 'Install core Arch dependencies with yay, plus language/dev tooling.'
+      ;;
+    install-deps-ubuntu.sh)
+      printf 'Install core Ubuntu/Debian dependencies, plus language/dev tooling.'
+      ;;
+    setup-ambxst.sh)
+      printf 'Install Ambxst and seed its generated Hyprland config.'
+      ;;
+    setup-ssh-alliance-user-key.sh)
+      printf 'Set Alliance SSH User and IdentityFile in the managed SSH config.'
+      ;;
+    *)
+      printf 'Dotfiles helper script.'
+      ;;
+  esac
+}
+
+list_scripts() {
+  local dir script name found=false
+
+  if dir="$(source_dir)"; then
+    dir="$dir/scripts"
+  else
+    dir="$HOME/.local/share/chezmoi/scripts"
+  fi
+
+  printf 'Dotfiles setup scripts'
+  if [ -d "$dir" ]; then
+    printf ' (%s)' "$dir"
+  fi
+  printf ':\n\n'
+
+  if [ -d "$dir" ]; then
+    for script in "$dir"/*.sh; do
+      [ -e "$script" ] || continue
+      found=true
+      name="$(basename "$script")"
+      printf '  %-34s %s\n' "$name" "$(script_description "$name")"
+    done
+  fi
+
+  if [ "$found" = false ]; then
+    usage | sed -n '/^Available scripts:/,$p'
+  fi
+}
+
+case "${1:---help}" in
+  -h|--help|help)
+    usage
+    ;;
+  scripts|list)
+    list_scripts
+    ;;
+  *)
+    printf 'Unknown command: %s\n\n' "$1" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

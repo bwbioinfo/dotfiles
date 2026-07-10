@@ -1,0 +1,24 @@
+# Do not manage SSH key material or runtime state.
+private_dot_ssh/private_id_*
+private_dot_ssh/id_*
+private_dot_ssh/*.pem
+private_dot_ssh/*.key
+private_dot_ssh/*.pub
+private_dot_ssh/private_*.pub
+private_dot_ssh/known_hosts
+private_dot_ssh/known_hosts.old
+private_dot_ssh/authorized_keys
+private_dot_ssh/private_authorized_keys
+private_dot_ssh/agent.*
+private_dot_ssh/control*
+private_dot_ssh/*.sock
+dot_ssh/id_*
+dot_ssh/*.pem
+dot_ssh/*.key
+dot_ssh/*.pub
+dot_ssh/known_hosts
+dot_ssh/known_hosts.old
+dot_ssh/authorized_keys
+dot_ssh/agent.*
+dot_ssh/control*
+dot_ssh/*.sock

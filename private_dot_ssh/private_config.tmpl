@@ -1,0 +1,44 @@
+# Common SSH configuration.
+#
+# Keep Host blocks directly in this file because some IDEs do not resolve
+# OpenSSH Include directives.
+
+# Digital Research Alliance of Canada clusters.
+#
+# Set .ssh.alliance.user and .ssh.alliance.identityFile in chezmoi data, or use
+# setup-ssh-alliance-user-key.sh after applying to populate the applied config.
+
+Host alliance-* cc-* rorqual fir nibi narval niagara *.alliancecan.ca *.computecanada.ca *.scinet.utoronto.ca
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+  TCPKeepAlive yes
+  ForwardAgent no
+  ForwardX11 no
+  AddKeysToAgent yes
+  ControlMaster auto
+  ControlPersist 30m
+  ControlPath ~/.ssh/control-%C
+{{- with (index . "ssh" | default dict) }}
+{{- with (index . "alliance" | default dict) }}
+{{- if and (index . "user") (index . "identityFile") }}
+  User {{ index . "user" }}
+  IdentityFile {{ index . "identityFile" }}
+  IdentitiesOnly yes
+{{- end }}
+{{- end }}
+{{- end }}
+
+Host alliance-rorqual cc-rorqual rorqual
+  HostName rorqual.alliancecan.ca
+
+Host alliance-fir cc-fir fir
+  HostName fir.alliancecan.ca
+
+Host alliance-nibi cc-nibi nibi
+  HostName nibi.alliancecan.ca
+
+Host alliance-narval cc-narval narval
+  HostName narval.alliancecan.ca
+
+Host alliance-niagara cc-niagara niagara
+  HostName niagara.alliancecan.ca

@@ -43,7 +43,7 @@ the dotfiles, this directory is also added to PATH as
 | `install-deps-arch-yay.sh` | Installs core Arch packages with `yay`, Flatpak Flameshot, R, Java 21, Android SDK/NDK, Rust via rustup, and beads. |
 | `install-deps-ubuntu.sh` | Installs core Ubuntu/Debian packages with `apt`, Flatpak Flameshot, R, Java 21, Android SDK/NDK, Rust via rustup, and beads. |
 | `setup-ambxst.sh` | Installs Ambxst and creates a seed Hyprland config that Ambxst can rewrite later. |
-| `setup-ssh-alliance-user-key.sh` | Adds or updates `User`, `IdentityFile`, and `IdentitiesOnly yes` in the managed Digital Research Alliance SSH config fragment. |
+| `setup-ssh-alliance-user-key.sh` | Adds or updates `User`, `IdentityFile`, and `IdentitiesOnly yes` in the managed Digital Research Alliance SSH config. |
 
 Arch:
 
@@ -134,25 +134,18 @@ Chezmoi manages only SSH configuration files:
 
 ```text
 ~/.ssh/config
-~/.ssh/config.d/common.conf
-~/.ssh/config.d/alliance.conf
 ```
 
 The chezmoi source paths are:
 
 ```text
-private_dot_ssh/private_config
-private_dot_ssh/private_config.d/private_common.conf
-private_dot_ssh/private_config.d/private_alliance.conf
+private_dot_ssh/private_config.tmpl
 ```
 
-`~/.ssh/config` is intentionally just:
+Host blocks are kept directly in `~/.ssh/config` instead of split through
+`Include` directives because some IDE SSH parsers do not resolve included files.
 
-```sshconfig
-Include ~/.ssh/config.d/*.conf
-```
-
-The `private_` chezmoi attributes keep the applied files restrictive.
+The `private_` chezmoi attributes keep the applied file restrictive.
 
 ### SSH Safety Boundary
 
@@ -170,10 +163,10 @@ key and state filenames under both `private_dot_ssh/` and `dot_ssh/`.
 
 ### Digital Research Alliance
 
-Alliance cluster config is grouped in:
+Alliance cluster config is kept in the flat SSH config template:
 
 ```text
-private_dot_ssh/private_config.d/private_alliance.conf
+private_dot_ssh/private_config.tmpl
 ```
 
 Current aliases include:
@@ -194,7 +187,7 @@ ControlPersist 30m
 ControlPath ~/.ssh/control-%C
 ```
 
-To add your Alliance username and key path to the managed config fragment:
+To add your Alliance username and key path to the applied managed config:
 
 ```sh
 scripts/setup-ssh-alliance-user-key.sh USER '~/.ssh/id_alliance'
@@ -267,16 +260,10 @@ nu --no-config-file --commands 'source dot_config/nushell/env.nu'
 ssh -F /tmp/dotfiles-ssh-test-config -G alliance-rorqual
 ```
 
-For the SSH parse check, create `/tmp/dotfiles-ssh-test-config` with:
-
-```sshconfig
-Include /home/geonic/Documents/GitHub/dotfiles/private_dot_ssh/private_config.d/*.conf
-```
-
-Then inspect what OpenSSH resolves:
+Inspect what OpenSSH resolves from the applied config:
 
 ```sh
-ssh -F /tmp/dotfiles-ssh-test-config -G alliance-rorqual
+ssh -F ~/.ssh/config -G alliance-rorqual
 ```
 
 ## Notes

@@ -15,7 +15,7 @@ Available scripts:
   install-deps-arch-yay.sh          Install core Arch dependencies with yay, plus language/dev tooling.
   install-deps-ubuntu.sh            Install core Ubuntu/Debian dependencies, plus language/dev tooling.
   setup-ambxst.sh                   Install Ambxst and seed its generated Hyprland config.
-  setup-ssh-alliance-user-key.sh    Set Alliance SSH User and IdentityFile in the managed SSH config.
+  setup-ssh-alliance-user-key.sh    Populate Alliance SSH User and IdentityFile in the managed config.
 
 After chezmoi apply, scripts usually live in:
   ~/.local/share/chezmoi/scripts
@@ -47,7 +47,7 @@ script_description() {
       printf 'Install Ambxst and seed its generated Hyprland config.'
       ;;
     setup-ssh-alliance-user-key.sh)
-      printf 'Set Alliance SSH User and IdentityFile in the managed SSH config.'
+      printf 'Populate Alliance SSH User and IdentityFile in the managed config.'
       ;;
     *)
       printf 'Dotfiles helper script.'
@@ -56,7 +56,8 @@ script_description() {
 }
 
 list_scripts() {
-  local dir script name found=false
+  local dir script name known_scripts=()
+  local -A seen=()
 
   if dir="$(source_dir)"; then
     dir="$dir/scripts"
@@ -73,15 +74,32 @@ list_scripts() {
   if [ -d "$dir" ]; then
     for script in "$dir"/*.sh; do
       [ -e "$script" ] || continue
-      found=true
       name="$(basename "$script")"
       printf '  %-34s %s\n' "$name" "$(script_description "$name")"
+      seen["$name"]=true
     done
   fi
 
-  if [ "$found" = false ]; then
-    usage | sed -n '/^Available scripts:/,$p'
-  fi
+  known_scripts=(
+    install-deps-arch-yay.sh
+    install-deps-ubuntu.sh
+    setup-ambxst.sh
+    setup-ssh-alliance-user-key.sh
+  )
+
+  for name in "${known_scripts[@]}"; do
+    if [ "${seen[$name]:-false}" = true ]; then
+      continue
+    fi
+
+    printf '  %-34s %s' "$name" "$(script_description "$name")"
+    if command -v "$name" >/dev/null 2>&1; then
+      printf ' (available as command)'
+    elif [ -d "$dir" ]; then
+      printf ' (not present in %s)' "$dir"
+    fi
+    printf '\n'
+  done
 }
 
 case "${1:---help}" in

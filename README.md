@@ -18,6 +18,23 @@ chezmoi diff
 chezmoi apply
 ```
 
+On the first apply, the setup prompts for your Git user name and email, then
+writes them to your local Git configuration with `git config --global`. Git
+identity and Git preferences are intentionally **not** managed as a chezmoi
+target, so later applies do not overwrite your identity, GitHub credential
+helpers, or other local Git settings. For a non-interactive bootstrap, provide
+the values explicitly:
+
+```sh
+DOTFILES_GIT_NAME='Your Name' DOTFILES_GIT_EMAIL='you@example.com' chezmoi apply
+```
+
+To review or change this machine's Git identity later, run:
+
+```sh
+scripts/configure-git.sh --force
+```
+
 For an already-cloned checkout:
 
 ```sh
@@ -43,6 +60,7 @@ the dotfiles, this directory is also added to PATH as
 | `install-deps-arch-yay.sh` | Installs core Arch packages with `yay`, Flatpak Flameshot, R, Java 21, Android SDK/NDK, Rust via rustup, Jcode, and beads. |
 | `install-deps-ubuntu.sh` | Installs core Ubuntu/Debian packages with `apt`, Flatpak Flameshot, R, Java 21, Android SDK/NDK, Rust via rustup, Jcode, and beads. |
 | `install-jcode.sh` | Uses Jcode's verified official installer without modifying managed shell startup files. |
+| `configure-git.sh` | Configures this machine's Git defaults and identity without making its Git config a chezmoi target. |
 | `setup-ambxst.sh` | Installs Ambxst and creates a seed Hyprland config that Ambxst can rewrite later. |
 | `setup-ssh-alliance-user-key.sh` | Adds or updates `User`, `IdentityFile`, and `IdentitiesOnly yes` in the managed Digital Research Alliance SSH config. |
 

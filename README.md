@@ -40,8 +40,9 @@ the dotfiles, this directory is also added to PATH as
 
 | Script | Purpose |
 | --- | --- |
-| `install-deps-arch-yay.sh` | Installs core Arch packages with `yay`, Flatpak Flameshot, R, Java 21, Android SDK/NDK, Rust via rustup, and beads. |
-| `install-deps-ubuntu.sh` | Installs core Ubuntu/Debian packages with `apt`, Flatpak Flameshot, R, Java 21, Android SDK/NDK, Rust via rustup, and beads. |
+| `install-deps-arch-yay.sh` | Installs core Arch packages with `yay`, Flatpak Flameshot, R, Java 21, Android SDK/NDK, Rust via rustup, Jcode, and beads. |
+| `install-deps-ubuntu.sh` | Installs core Ubuntu/Debian packages with `apt`, Flatpak Flameshot, R, Java 21, Android SDK/NDK, Rust via rustup, Jcode, and beads. |
+| `install-jcode.sh` | Uses Jcode's verified official installer without modifying managed shell startup files. |
 | `setup-ambxst.sh` | Installs Ambxst and creates a seed Hyprland config that Ambxst can rewrite later. |
 | `setup-ssh-alliance-user-key.sh` | Adds or updates `User`, `IdentityFile`, and `IdentitiesOnly yes` in the managed Digital Research Alliance SSH config. |
 
@@ -76,6 +77,17 @@ The dependency scripts install or configure:
   ```text
   ~/.local/share/jdks/jdk-21.0.11+10
   ```
+
+- Jcode from the official installer:
+
+  ```sh
+  scripts/install-jcode.sh
+  ```
+
+During `chezmoi apply`, `run_onchange_after_configure-codex.sh` preserves
+Codex's runtime-managed configuration while setting its defaults to Terra
+(`gpt-5.6-terra`), high reasoning effort, and the default service tier, which
+keeps fast mode disabled.
 
 - Android SDK into:
 

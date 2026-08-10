@@ -142,6 +142,13 @@ else
   echo "rustup already installed, skipping."
 fi
 
+if ! command -v jcode >/dev/null 2>&1; then
+  echo "Installing Jcode..."
+  "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/install-jcode.sh"
+else
+  echo "Jcode already installed, skipping."
+fi
+
 if ! command -v beads >/dev/null 2>&1; then
   echo "Installing beads..."
   curl -fsSL https://raw.githubusercontent.com/gastownhall/beads/main/scripts/install.sh | bash

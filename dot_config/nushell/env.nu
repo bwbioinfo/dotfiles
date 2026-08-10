@@ -42,3 +42,44 @@ if ($android_home | path exists) {
 if ($java_home | path exists) {
     path add $'($java_home)/bin'
 }
+
+# Reuse a single ssh-agent across Nushell, Bash, and Zsh sessions. The state
+# file contains only the agent socket and PID, never a key or passphrase.
+if ((which ssh-agent | length) > 0) {
+    let agent_env = $"($nu.home-dir)/.ssh/agent.env"
+
+    let agent_is_reachable = {
+        if not ("SSH_AUTH_SOCK" in $env) {
+            false
+        } else if not ($env.SSH_AUTH_SOCK | path exists) {
+            false
+        } else {
+            let result = (do -i { ^ssh-add -l | complete })
+            $result.exit_code in [0 1]
+        }
+    }
+
+    if (not (do $agent_is_reachable)) and ($agent_env | path exists) {
+        let agent_state = (open --raw $agent_env | parse -r '(?m)^SSH_AUTH_SOCK=(?<socket>[^;]+);.*\r?\nSSH_AGENT_PID=(?<pid>[^;]+);')
+        if (($agent_state | length) > 0) {
+            $env.SSH_AUTH_SOCK = $agent_state.0.socket
+            $env.SSH_AGENT_PID = $agent_state.0.pid
+        }
+    }
+
+    if not (do $agent_is_reachable) {
+        mkdir ($agent_env | path dirname)
+        let result = (^ssh-agent -s | complete)
+        if $result.exit_code != 0 {
+            error make {msg: "Unable to start ssh-agent"}
+        }
+        let agent_state = ($result.stdout | parse -r '(?m)^SSH_AUTH_SOCK=(?<socket>[^;]+);.*\r?\nSSH_AGENT_PID=(?<pid>[^;]+);')
+        if (($agent_state | length) == 0) {
+            error make {msg: "ssh-agent did not return its environment"}
+        }
+        $env.SSH_AUTH_SOCK = $agent_state.0.socket
+        $env.SSH_AGENT_PID = $agent_state.0.pid
+        $result.stdout | save -f $agent_env
+        ^chmod 600 $agent_env
+    }
+}

@@ -152,7 +152,10 @@ Important pieces:
 
 - `env.sh`: PATH, Go, Rust, Java, Android, Flatpak, Julia, and chezmoi script paths.
 - `git.sh`: Git aliases and branch rename helper.
-- `ssh-agent.sh`: Reuses a per-user `ssh-agent` across interactive shells.
+- `ssh-agent.sh`: Reuses a reachable per-user `ssh-agent` across Bash and Zsh
+  sessions, replacing stale sockets automatically. Nushell provides the same
+  behavior from `env.nu`. The shared `~/.ssh/agent.env` records only the agent
+  socket and PID, never key material.
 - `keepass.sh`: KeePass helper functions; requires `keepassxc-cli` if used.
 
 Nushell configuration lives in `dot_config/nushell/` and mirrors the Java and

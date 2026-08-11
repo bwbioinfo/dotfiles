@@ -23,6 +23,13 @@ path add $"($nu.home-dir)/.local/share/chezmoi/scripts"
 path add $"($nu.home-dir)/.cargo/bin"
 path add $"($nu.home-dir)/.local/share/flatpak/exports/bin"
 path add "/var/lib/flatpak/exports/bin"
+path add "/usr/local/go/bin"
+
+if not ("GOPATH" in $env) {
+    $env.GOPATH = $"($nu.home-dir)/go"
+}
+
+path add $"($env.GOPATH)/bin"
 
 let java_home = $"($nu.home-dir)/.local/share/jdks/jdk-21.0.11+10"
 if ($java_home | path exists) {

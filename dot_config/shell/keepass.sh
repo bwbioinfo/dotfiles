@@ -2,11 +2,11 @@
 
 _kp_sj_get() {
   local attribute="$1"
-  local entry="$2"
-  local db="$HOME/SyncCHU/NickCHUSTJ.kdbx"
+  local db="$2"
+  local entry="$3"
 
-  if [[ -z "$entry" ]]; then
-    echo "Usage: _kp_sj_get <attribute> 'Group/Entry name'" >&2
+  if [[ -z "$db" || -z "$entry" ]]; then
+    echo "Usage: _kp_sj_get <attribute> <database.kdbx> 'Group/Entry name'" >&2
     return 1
   fi
 
@@ -25,30 +25,39 @@ _kp_sj_get() {
 
 
 kp_token_sj() {
-  if [[ -z "$1" ]]; then
-    echo "Usage: kp_token_sj 'Group/Entry name'" >&2
+  local db="$1"
+  local entry="$2"
+
+  if [[ -z "$db" || -z "$entry" ]]; then
+    echo "Usage: kp_token_sj <database.kdbx> 'Group/Entry name'" >&2
     return 1
   fi
 
-  _kp_sj_get Password "$1"
+  _kp_sj_get Password "$db" "$entry"
 }
 
 
 kp_url_sj() {
-  if [[ -z "$1" ]]; then
-    echo "Usage: kp_url_sj 'Group/Entry name'" >&2
+  local db="$1"
+  local entry="$2"
+
+  if [[ -z "$db" || -z "$entry" ]]; then
+    echo "Usage: kp_url_sj <database.kdbx> 'Group/Entry name'" >&2
     return 1
   fi
 
-  _kp_sj_get URL "$1"
+  _kp_sj_get URL "$db" "$entry"
 }
 
 
 kp_user_sj() {
-  if [[ -z "$1" ]]; then
-    echo "Usage: kp_user_sj 'Group/Entry name'" >&2
+  local db="$1"
+  local entry="$2"
+
+  if [[ -z "$db" || -z "$entry" ]]; then
+    echo "Usage: kp_user_sj <database.kdbx> 'Group/Entry name'" >&2
     return 1
   fi
 
-  _kp_sj_get UserName "$1"
+  _kp_sj_get UserName "$db" "$entry"
 }

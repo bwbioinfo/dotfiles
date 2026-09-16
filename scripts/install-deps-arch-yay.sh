@@ -16,6 +16,7 @@ PACKAGES=(
   gawk
   git
   grim
+  jq
   libnotify
   networkmanager
   nushell
@@ -25,7 +26,9 @@ PACKAGES=(
   slurp
   starship
   swappy
+  terminator
   unzip
+  wezterm
   wget
   zoxide
   zsh

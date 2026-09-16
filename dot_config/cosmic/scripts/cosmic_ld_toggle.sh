@@ -12,9 +12,18 @@ fi
 if [[ "$cur" == "true" ]]; then
   echo -n "false" > "$f"
   msg="Light mode"
+  mode="light"
 else
   echo -n "true" > "$f"
   msg="Dark mode"
+  mode="dark"
+fi
+
+# Keep GTK applications, including Terminator's theme-colour profile, aligned
+# with the COSMIC switch. The helper also updates the Qt preferences.
+propagate_theme="$HOME/.local/bin/ambxst-propagate-theme"
+if [[ -x "$propagate_theme" ]]; then
+  "$propagate_theme" "--$mode" >/dev/null 2>&1 || true
 fi
 
 command -v notify-send >/dev/null 2>&1 && notify-send "COSMIC theme" "$msg" || true

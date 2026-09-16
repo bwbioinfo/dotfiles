@@ -251,19 +251,25 @@ settings.
 The local fallback binds include:
 
 ```text
-Super+Return  cosmic-term
+Super+Return  terminator
+Super+T       terminator
+Super+Shift+T wezterm
 Super+Space   fuzzel
 Super+B       firefox
 Super+Shift+E exit Hyprland
 Super+Shift+M ambxst
 ```
 
-Ambxst's light/dark toggle updates shell colors, but apps also need desktop
-toolkit preferences. Enable the user watcher after applying these dotfiles:
+Terminator uses its GTK theme colors, so it follows the same light/dark
+preference that Ambxst propagates to GTK and Qt. Enable the user watcher after
+applying these dotfiles:
 
 ```sh
 systemctl --user enable --now ambxst-theme-propagate.service ambxst-theme-propagate.path
 ```
+
+The COSMIC light/dark shortcut is `Super+Shift+L`. It also invokes the same
+propagation helper, so Terminator follows COSMIC switches as well.
 
 ## COSMIC Desktop
 
@@ -276,6 +282,9 @@ Notable shortcut commands currently include:
 ```text
 Super+D        firefox
 Super+C        zeditor -n
+Super+T        terminator
+Super+Shift+T  wezterm
+Super+Shift+L  toggle light/dark mode
 Super+Shift+O  obsidian
 Super+Shift+Z  signal-desktop --password-store="kwallet6"
 Alt+Shift+4    flameshot gui

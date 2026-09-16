@@ -20,6 +20,7 @@ APT_PACKAGES=(
   gawk
   git
   grim
+  jq
   libnotify-bin
   network-manager
   openssh-client
@@ -27,7 +28,9 @@ APT_PACKAGES=(
   ripgrep
   slurp
   swappy
+  terminator
   unzip
+  wezterm
   wget
   zsh
 )

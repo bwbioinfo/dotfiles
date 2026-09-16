@@ -1,0 +1,7 @@
+# Terminator is a GTK application. Keep its terminal foreground and background
+# tied to the active GTK light/dark preference, which is maintained by
+# ambxst-propagate-theme.
+[profiles]
+  [[default]]
+    use_theme_colors = True
+    background_type = solid

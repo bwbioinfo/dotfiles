@@ -33,7 +33,7 @@
             Super,
             Shift,
         ],
-        key: "l",
+        key: "t",
         description: Some("ToggleDark"),
     ): Spawn("bash /home/$USER/.config/cosmic/scripts/cosmic_ld_toggle.sh"),
     (
@@ -70,12 +70,4 @@
         key: "t",
         description: Some("Terminal"),
     ): Spawn("terminator"),
-    (
-        modifiers: [
-            Super,
-            Shift,
-        ],
-        key: "t",
-        description: Some("Alternate terminal"),
-    ): Spawn("wezterm"),
 }

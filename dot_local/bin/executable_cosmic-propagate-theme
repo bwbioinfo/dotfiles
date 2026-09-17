@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+mode_file="${config_home}/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
+propagate_theme="$(dirname "$0")/ambxst-propagate-theme"
+
+if [[ ! -r "$mode_file" ]]; then
+  printf 'COSMIC theme mode file not found, skipping: %s\n' "$mode_file" >&2
+  exit 0
+fi
+
+is_dark="$(tr -d '[:space:]' <"$mode_file" | tr '[:upper:]' '[:lower:]')"
+case "$is_dark" in
+  true)
+    exec "$propagate_theme" --dark
+    ;;
+  false)
+    exec "$propagate_theme" --light
+    ;;
+  *)
+    printf 'Unrecognized COSMIC theme mode in %s: %s\n' "$mode_file" "$is_dark" >&2
+    exit 1
+    ;;
+esac

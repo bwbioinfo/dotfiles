@@ -1,0 +1,9 @@
+[Unit]
+Description=Propagate COSMIC theme mode to app toolkits
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/cosmic-propagate-theme
+
+[Install]
+WantedBy=default.target

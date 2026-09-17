@@ -260,16 +260,19 @@ Super+Shift+E exit Hyprland
 Super+Shift+M ambxst
 ```
 
-Terminator uses its GTK theme colors, so it follows the same light/dark
-preference that Ambxst propagates to GTK and Qt. Enable the user watcher after
-applying these dotfiles:
+Terminator uses its GTK theme colors. Enable both user watchers after applying
+these dotfiles so Ambxst and COSMIC theme changes propagate to GTK and Qt:
 
 ```sh
-systemctl --user enable --now ambxst-theme-propagate.service ambxst-theme-propagate.path
+systemctl --user daemon-reload
+systemctl --user enable --now \
+  ambxst-theme-propagate.service ambxst-theme-propagate.path \
+  cosmic-theme-propagate.service cosmic-theme-propagate.path
 ```
 
 The COSMIC light/dark shortcut is `Super+Shift+T`. It also invokes the same
-propagation helper, so Terminator follows COSMIC switches as well.
+propagation helper as the COSMIC watcher, so Terminator follows switches made
+through either the shortcut or COSMIC Settings.
 
 ## COSMIC Desktop
 

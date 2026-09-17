@@ -4,22 +4,127 @@ set -euo pipefail
 config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
 mode_file="${config_home}/cosmic/com.system76.CosmicTheme.Mode/v1/is_dark"
 propagate_theme="$(dirname "$0")/ambxst-propagate-theme"
+terminator_config="${config_home}/terminator/config"
 
 if [[ ! -r "$mode_file" ]]; then
   printf 'COSMIC theme mode file not found, skipping: %s\n' "$mode_file" >&2
   exit 0
 fi
 
+set_terminator_colors() {
+  local background="$1"
+  local foreground="$2"
+  local directory
+  local temporary
+
+  directory="$(dirname "$terminator_config")"
+  mkdir -p "$directory"
+
+  if [[ ! -e "$terminator_config" ]]; then
+    cat >"$terminator_config" <<EOF
+[profiles]
+  [[default]]
+    use_theme_colors = False
+    background_type = solid
+    background_color = "$background"
+    foreground_color = "$foreground"
+    cursor_color_default = False
+    cursor_fg_color = "$background"
+    cursor_bg_color = "$foreground"
+EOF
+    return
+  fi
+
+  if ! grep -qE '^[[:space:]]*\[\[default\]\][[:space:]]*$' "$terminator_config"; then
+    printf 'Terminator default profile not found, skipping color update: %s\n' "$terminator_config" >&2
+    return
+  fi
+
+  temporary="$(mktemp "${terminator_config}.tmp.XXXXXX")"
+  awk -v background="$background" -v foreground="$foreground" '
+    function write_missing() {
+      if (!seen["use_theme_colors"]) print "    use_theme_colors = False"
+      if (!seen["background_type"]) print "    background_type = solid"
+      if (!seen["background_color"]) print "    background_color = \"" background "\""
+      if (!seen["foreground_color"]) print "    foreground_color = \"" foreground "\""
+      if (!seen["cursor_color_default"]) print "    cursor_color_default = False"
+      if (!seen["cursor_fg_color"]) print "    cursor_fg_color = \"" background "\""
+      if (!seen["cursor_bg_color"]) print "    cursor_bg_color = \"" foreground "\""
+    }
+
+    /^[[:space:]]*\[\[[^]]+\]\][[:space:]]*$/ {
+      if (in_default) write_missing()
+      in_default = ($0 ~ /^[[:space:]]*\[\[default\]\][[:space:]]*$/)
+      print
+      next
+    }
+
+    in_default && /^[[:space:]]*use_theme_colors[[:space:]]*=/ {
+      print "    use_theme_colors = False"
+      seen["use_theme_colors"] = 1
+      next
+    }
+    in_default && /^[[:space:]]*background_type[[:space:]]*=/ {
+      print "    background_type = solid"
+      seen["background_type"] = 1
+      next
+    }
+    in_default && /^[[:space:]]*background_color[[:space:]]*=/ {
+      print "    background_color = \"" background "\""
+      seen["background_color"] = 1
+      next
+    }
+    in_default && /^[[:space:]]*foreground_color[[:space:]]*=/ {
+      print "    foreground_color = \"" foreground "\""
+      seen["foreground_color"] = 1
+      next
+    }
+    in_default && /^[[:space:]]*cursor_color_default[[:space:]]*=/ {
+      print "    cursor_color_default = False"
+      seen["cursor_color_default"] = 1
+      next
+    }
+    in_default && /^[[:space:]]*cursor_fg_color[[:space:]]*=/ {
+      print "    cursor_fg_color = \"" background "\""
+      seen["cursor_fg_color"] = 1
+      next
+    }
+    in_default && /^[[:space:]]*cursor_bg_color[[:space:]]*=/ {
+      print "    cursor_bg_color = \"" foreground "\""
+      seen["cursor_bg_color"] = 1
+      next
+    }
+
+    { print }
+
+    END { if (in_default) write_missing() }
+  ' "$terminator_config" >"$temporary"
+  mv "$temporary" "$terminator_config"
+}
+
 is_dark="$(tr -d '[:space:]' <"$mode_file" | tr '[:upper:]' '[:lower:]')"
 case "$is_dark" in
   true)
-    exec "$propagate_theme" --dark
+    mode="dark"
+    background="#2b2e34"
+    foreground="#b5c1d4"
     ;;
   false)
-    exec "$propagate_theme" --light
+    mode="light"
+    background="#d7d7d7"
+    foreground="#121212"
     ;;
   *)
     printf 'Unrecognized COSMIC theme mode in %s: %s\n' "$mode_file" "$is_dark" >&2
     exit 1
     ;;
 esac
+
+"$propagate_theme" "--$mode"
+set_terminator_colors "$background" "$foreground"
+
+# Terminator does not monitor its config file, so signal the running instance
+# through its D-Bus-backed CLI. This is harmless when it is not running.
+if command -v terminator >/dev/null 2>&1; then
+  terminator --reload >/dev/null 2>&1 || true
+fi

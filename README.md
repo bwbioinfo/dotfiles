@@ -260,7 +260,8 @@ Super+Shift+E exit Hyprland
 Super+Shift+M ambxst
 ```
 
-Terminator uses its GTK theme colors. Enable both user watchers after applying
+COSMIC propagation writes a matching Terminator profile and tells a running
+Terminator instance to reload it. Enable both user watchers after applying
 these dotfiles so Ambxst and COSMIC theme changes propagate to GTK and Qt:
 
 ```sh

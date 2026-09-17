@@ -268,7 +268,7 @@ applying these dotfiles:
 systemctl --user enable --now ambxst-theme-propagate.service ambxst-theme-propagate.path
 ```
 
-The COSMIC light/dark shortcut is `Super+Shift+L`. It also invokes the same
+The COSMIC light/dark shortcut is `Super+Shift+T`. It also invokes the same
 propagation helper, so Terminator follows COSMIC switches as well.
 
 ## COSMIC Desktop
@@ -283,8 +283,7 @@ Notable shortcut commands currently include:
 Super+D        firefox
 Super+C        zeditor -n
 Super+T        terminator
-Super+Shift+T  wezterm
-Super+Shift+L  toggle light/dark mode
+Super+Shift+T  toggle light/dark mode
 Super+Shift+O  obsidian
 Super+Shift+Z  signal-desktop --password-store="kwallet6"
 Alt+Shift+4    flameshot gui

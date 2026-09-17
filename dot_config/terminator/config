@@ -1,7 +1,12 @@
-# Terminator is a GTK application. Keep its terminal foreground and background
-# tied to the active GTK light/dark preference, which is maintained by
-# ambxst-propagate-theme.
+# COSMIC theme propagation rewrites these colors when its mode changes, then
+# asks a running Terminator process to reload them. Explicit colors are needed
+# because Terminator does not react to COSMIC's GTK preference update alone.
 [profiles]
   [[default]]
-    use_theme_colors = True
+    use_theme_colors = False
     background_type = solid
+    background_color = "#2b2e34"
+    foreground_color = "#b5c1d4"
+    cursor_color_default = False
+    cursor_fg_color = "#2b2e34"
+    cursor_bg_color = "#b5c1d4"
